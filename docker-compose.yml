@@ -17,3 +17,20 @@ services:
       - "8000:8000"
     environment: # local values
       - ENV=local
+
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+      cache_from:
+        - ${IMAGE_PREFIX}frontend${IMAGE_TAG}
+      args:
+        - CI_REGISTRY=${CI_REGISTRY}/
+    volumes:
+      - ./frontend:/usr/app:delegated
+    ports:
+      - "3000:3000"
+    environment: # local values
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    stdin_open: true
