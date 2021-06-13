@@ -2,14 +2,12 @@ version: "3.8"
 
 services:
   backend:
-    image: ${IMAGE_PREFIX}backend${IMAGE_TAG}
+    image: granthynd/blog_backend${IMAGE_TAG}
     build:
       context: backend/blog
       dockerfile: Dockerfile
       cache_from:
-        - ${IMAGE_PREFIX}backend${IMAGE_TAG}
-      args:
-        - CI_REGISTRY=${CI_REGISTRY}/
+        - granthynd/blog_backend${IMAGE_TAG}
     command: "python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./backend/blog:/app:delegated
@@ -19,13 +17,12 @@ services:
       - ENV=local
 
   frontend:
+    image: granthynd/blog_frontend${IMAGE_TAG}
     build:
       context: frontend
       dockerfile: Dockerfile
       cache_from:
-        - ${IMAGE_PREFIX}frontend${IMAGE_TAG}
-      args:
-        - CI_REGISTRY=${CI_REGISTRY}/
+        - granthynd/blog_frontend${IMAGE_TAG}
     volumes:
       - ./frontend:/usr/app:delegated
     ports:
