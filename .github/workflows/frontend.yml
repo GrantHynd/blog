@@ -23,4 +23,5 @@ jobs:
         with:
           push: true
           context: frontend
+          target: production
           tags: granthynd/blog_frontend:${{ github.head_ref || 'latest' }}
