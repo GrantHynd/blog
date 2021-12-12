@@ -30,7 +30,7 @@ variable "nodes" {
 
 variable "linode_token" {
   description = " Linode API token"
-  default = "<secret>"
+  default     = "<secret>"
 }
 
 variable "root_pass" {
@@ -42,5 +42,5 @@ variable "ssh_key" {
 }
 
 variable "blog_chart_version" {
-  default = "0.14.0"
+  default = "0.20.0"
 }

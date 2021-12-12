@@ -23,15 +23,15 @@ resource "linode_lke_cluster" "prod_cluster" {
   tags        = ["PROD"]
 
   pool {
-      type  = var.server_type_node
-      count = var.nodes
+    type  = var.server_type_node
+    count = var.nodes
   }
 }
 
 resource "local_file" "kubeconfig" {
-  depends_on   = [linode_lke_cluster.prod_cluster]
-  filename     = "kubeconfig"
-  content      = base64decode(linode_lke_cluster.prod_cluster.kubeconfig)
+  depends_on = [linode_lke_cluster.prod_cluster]
+  filename   = "kubeconfig"
+  content    = base64decode(linode_lke_cluster.prod_cluster.kubeconfig)
 }
 
 # Setup helm connection to cluster 
@@ -54,27 +54,27 @@ provider "helm" {
 # }
 
 resource "helm_release" "blog_release" {
-  depends_on   = [local_file.kubeconfig]
-  name             = "blog"
-  namespace        = "default"
-  chart            = "blog"
-  version          = var.blog_chart_version
-  repository       = "https://granthynd.github.io/helm-charts"
+  depends_on      = [local_file.kubeconfig]
+  name            = "blog"
+  namespace       = "default"
+  chart           = "blog"
+  version         = var.blog_chart_version
+  repository      = "https://granthynd.github.io/helm-charts"
   wait            = true
   cleanup_on_fail = true
 }
 
-# # Setup blog domain
+# Setup blog domain
 resource "linode_domain" "blog_domain" {
-  domain = "granthynd.com"
+  domain    = "granthynd.com"
   soa_email = "grant.hynd@gmail.com"
-  type = "master"
+  type      = "master"
 }
 
 resource "linode_domain_record" "blog_domain_record" {
-  domain_id = linode_domain.blog_domain.id
-  name = "www"
+  domain_id   = linode_domain.blog_domain.id
+  name        = "www"
   record_type = "CNAME"
-  target = linode_domain.blog_domain.domain
-  ttl_sec = 300
+  target      = linode_domain.blog_domain.domain
+  ttl_sec     = 300
 }
