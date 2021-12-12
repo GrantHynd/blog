@@ -25,7 +25,7 @@ variable "region" {
 
 variable "nodes" {
   description = "Number of nodes for the cluster"
-  default     = 3
+  default     = 1
 }
 
 variable "linode_token" {
@@ -42,5 +42,5 @@ variable "ssh_key" {
 }
 
 variable "blog_chart_version" {
-  default = "0.20.0"
+  default = "0.23.0"
 }
