@@ -5,6 +5,7 @@ provider "registry.terraform.io/hashicorp/helm" {
   version     = "2.3.0"
   constraints = "2.3.0"
   hashes = [
+    "h1:7Bs688A79t9vct+XeyO4siL7UrHhZ33PFosGrv7spPQ=",
     "h1:qo08yDJAnkE8H2CNuI2fVP2W+J3bOCrXWRvAerQpgc8=",
     "zh:0c63c0aa9f13ec057971c9ddd0965e062b064c0b2ce9a3d13df41239b8f5af89",
     "zh:14b4146e56b1c1e5492ce597d03fb993a71039dd701e3886667f7ad3d60afd34",
@@ -24,6 +25,7 @@ provider "registry.terraform.io/hashicorp/local" {
   version = "2.1.0"
   hashes = [
     "h1:EYZdckuGU3n6APs97nS2LxZm3dDtGqyM4qaIvsmac8o=",
+    "h1:PaQTpxHMbZB9XV+c1od1eaUvndQle3ZZHx79hrI6C3k=",
     "zh:0f1ec65101fa35050978d483d6e8916664b7556800348456ff3d09454ac1eae2",
     "zh:36e42ac19f5d68467aacf07e6adcf83c7486f2e5b5f4339e9671f68525fc87ab",
     "zh:6db9db2a1819e77b1642ec3b5e95042b202aee8151a0256d289f2e141bf3ceb3",
@@ -42,6 +44,7 @@ provider "registry.terraform.io/linode/linode" {
   version     = "1.20.2"
   constraints = "1.20.2"
   hashes = [
+    "h1:KE9OxFVDwQE3c+3ss9R7sGyyAU+jwmlr/SNwP5+d6Qw=",
     "h1:vr6CnniYpgupv3zAcDYPYvqadhqwreWFRc88y3FWNhA=",
     "zh:1236802b9257de66ad3580eb69605ae08511da70112741587e8d426ed13f96c9",
     "zh:1604df9ef1a3546e696463d626fe18dc8fa7e6a75e973e5a268125a32251c73d",
