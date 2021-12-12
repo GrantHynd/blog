@@ -41,18 +41,19 @@ provider "helm" {
   }
 }
 
-# TODO switch to use: https://charts.bitnami.com/bitnami
-# resource "helm_release" "ingress_nginx_release" {
-#   depends_on   = [local_file.kubeconfig]
-#   name             = "ingress-nginx"
-#   namespace        = "default"
-#   chart            = "ingress-nginx"
-#   version          = "4.0.1"
-#   repository       = "https://kubernetes.github.io/ingress-nginx"
-#   wait            = true
-#   cleanup_on_fail = true
-# }
+# Install Ingress controller
+resource "helm_release" "ingress_nginx_release" {
+  depends_on      = [local_file.kubeconfig]
+  name            = "nginx"
+  namespace       = "default"
+  chart           = "ingress-nginx"
+  version         = "4.0.13"
+  repository      = "https://kubernetes.github.io/ingress-nginx"
+  wait            = true
+  cleanup_on_fail = true
+}
 
+# Install application
 resource "helm_release" "blog_release" {
   depends_on      = [local_file.kubeconfig]
   name            = "blog"
