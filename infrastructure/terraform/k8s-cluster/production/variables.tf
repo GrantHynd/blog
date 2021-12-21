@@ -1,20 +1,20 @@
 variable "cluster_name" {
-  description = " Cluster name"
-  default     = "default-cluster"
+  description = "Cluster name"
+  default     = "production-cluster"
 }
 
 variable "server_type_master" {
-  description = " Master type"
+  description = "Master type"
   default     = "g6-standard-1"
 }
 
 variable "server_type_node" {
-  description = " Node type"
+  description = "Node type"
   default     = "g6-standard-1"
 }
 
 variable "k8s_version" {
-  description = " Version of k8s for the cluster"
+  description = "Version of k8s for the cluster"
   default     = "1.21"
 }
 
@@ -42,5 +42,5 @@ variable "ssh_key" {
 }
 
 variable "blog_chart_version" {
-  default = "0.23.0"
+  default = "0.24.0"
 }

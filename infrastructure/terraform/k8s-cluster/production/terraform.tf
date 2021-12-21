@@ -41,7 +41,7 @@ provider "helm" {
   }
 }
 
-# Install Ingress controller
+# Install Ingress Controller
 resource "helm_release" "ingress_nginx_release" {
   depends_on      = [local_file.kubeconfig]
   name            = "nginx"
@@ -63,19 +63,4 @@ resource "helm_release" "blog_release" {
   repository      = "https://granthynd.github.io/helm-charts"
   wait            = true
   cleanup_on_fail = true
-}
-
-# Setup blog domain
-resource "linode_domain" "blog_domain" {
-  domain    = "granthynd.com"
-  soa_email = "grant.hynd@gmail.com"
-  type      = "master"
-}
-
-resource "linode_domain_record" "blog_domain_record" {
-  domain_id   = linode_domain.blog_domain.id
-  name        = "www"
-  record_type = "CNAME"
-  target      = linode_domain.blog_domain.domain
-  ttl_sec     = 300
 }
