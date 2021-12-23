@@ -15,7 +15,7 @@ variable "server_type_node" {
 
 variable "k8s_version" {
   description = "Version of k8s for the cluster"
-  default     = "1.21"
+  default     = "1.22"
 }
 
 variable "region" {
