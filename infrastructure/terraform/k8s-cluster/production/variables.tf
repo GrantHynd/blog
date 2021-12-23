@@ -42,5 +42,5 @@ variable "ssh_key" {
 }
 
 variable "blog_chart_version" {
-  default = "0.24.0"
+  default = "0.30.0"
 }
