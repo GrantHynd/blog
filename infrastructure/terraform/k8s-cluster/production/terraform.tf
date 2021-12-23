@@ -41,6 +41,24 @@ provider "helm" {
   }
 }
 
+# Install Cert Manager
+resource "helm_release" "cert_manager_release" {
+  depends_on       = [local_file.kubeconfig]
+  name             = "cert-manager"
+  namespace        = "cert-manager"
+  create_namespace = true
+  chart            = "cert-manager"
+  version          = "0.1.29"
+  repository       = "https://charts.bitnami.com/bitnami"
+  wait             = true
+  cleanup_on_fail  = true
+
+  set {
+    name  = "installCRDs"
+    value = true
+  }
+}
+
 # Install Ingress Controller
 resource "helm_release" "ingress_nginx_release" {
   depends_on      = [local_file.kubeconfig]
@@ -55,7 +73,7 @@ resource "helm_release" "ingress_nginx_release" {
 
 # Install application
 resource "helm_release" "blog_release" {
-  depends_on      = [local_file.kubeconfig]
+  depends_on      = [helm_release.cert_manager_release, helm_release.ingress_nginx_release]
   name            = "blog"
   namespace       = "default"
   chart           = "blog"
