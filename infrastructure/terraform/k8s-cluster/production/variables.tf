@@ -25,7 +25,7 @@ variable "region" {
 
 variable "nodes" {
   description = "Number of nodes for the cluster"
-  default     = 1
+  default     = 3
 }
 
 variable "linode_token" {
