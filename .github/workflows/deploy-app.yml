@@ -2,25 +2,16 @@ name: Deploy application
 
 on:
   workflow_run:
-    workflows:
-      - Build and publish backend
-      - Build and publish frontend
-    types:
-      - completed
+    workflows: ["Build and publish frontend"]
+    types: ["completed"]
 
 jobs:
   deployment:
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v1
-      - name: "Deploy"
-        uses: "deliverybot/helm@v1"
+      - name: Deploy
+        uses: WyriHaximus/github-action-helm3@v2
         with:
-          release: "blog"
-          namespace: "default"
-          chart: "blog"
-          repo: "https://granthynd.github.io/helm-charts"
-          chart-version: 0.32.0
-          token: "${{ secrets.GITHUB_TOKEN }}"
-        env:
-          KUBECONFIG_FILE: "${{ secrets.KUBECONFIG }}"
+          exec: helm upgrade blog blog --install --wait --atomic --repo https://granthynd.github.io/helm-charts
+          kubeconfig: "${{ secrets.KUBECONFIG }}"
