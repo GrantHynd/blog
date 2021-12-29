@@ -1,9 +1,6 @@
 name: Deploy application
 
 on:
-  # TODO: include before merging
-  # push:
-  #   branches: [main]
   workflow_run:
     workflows:
       - Build and publish backend
