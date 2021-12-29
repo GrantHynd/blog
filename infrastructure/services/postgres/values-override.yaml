@@ -1,0 +1,23 @@
+# Override Postgres default Helm chart values
+# https://github.com/helm/charts/tree/master/stable/postgresql
+
+global:
+  postgresql:
+    postgresqlDatabase: ${DB_NAME}
+    postgresqlUsername: ${DB_USER}
+    postgresqlPassword: ${DB_PASSWORD}
+    servicePort: ${DB_PORT}
+
+persistence:
+  enabled: true
+  size: 10Gi
+  mountPath: "/bitnami/postgresql"
+  subPath: "data"
+
+volumePermissions:
+  enabled: true
+
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 250m

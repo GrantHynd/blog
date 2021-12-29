@@ -15,6 +15,13 @@ services:
       - "8000:8000"
     environment: # local values
       - ENV=local
+      - DB_HOST=database
+      - DB_PORT=5432
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - BACKEND_DOMAIN=backend.granthynd.com
+      - FRONTEND_DOMAIN=granthynd.com
 
   frontend:
     image: granthynd/blog_frontend${IMAGE_TAG}
@@ -31,3 +38,19 @@ services:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
     stdin_open: true
+
+  database:
+    image: postgres:14.1
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment: # local values
+      - POSTGRES_HOST=database
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+volumes:
+  pgdata:
