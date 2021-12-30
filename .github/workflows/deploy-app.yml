@@ -13,6 +13,9 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v1
+      - uses: azure/setup-helm@v1
+        with:
+          version: "latest"
       - name: Substitute env vars
         shell: bash
         env:
@@ -26,10 +29,6 @@ jobs:
         run: |
           envsubst < infrastructure/services/blog/backend-env-vars.yaml > values.tmp && \
           mv values.tmp infrastructure/services/blog/backend-env-vars.yaml
-      - name: Install Helm
-        uses: azure/setup-helm@v1
-        with:
-          version: "latest"
       - name: Deploy Application Helm Chart
         with:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
