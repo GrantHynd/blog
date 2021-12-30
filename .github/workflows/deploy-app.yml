@@ -26,10 +26,15 @@ jobs:
         run: |
           envsubst < infrastructure/services/blog/backend-env-vars.yaml > values.tmp && \
           mv values.tmp infrastructure/services/blog/backend-env-vars.yaml
-      - name: Deploy
-        uses: WyriHaximus/github-action-helm3@v2
+      - name: Install Helm
+        uses: azure/setup-helm@v1
         with:
-          exec: helm upgrade blog blog --install --wait --atomic \
+          version: "latest"
+      - name: Deploy Application Helm Chart
+        with:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+        run: |
+          helm upgrade blog blog --install --wait --atomic \
             --repo https://granthynd.github.io/helm-charts \
-            -f infrastructure/services/blog/backend-env-vars.yaml
-          kubeconfig: "${{ secrets.KUBECONFIG }}"
+            -f infrastructure/services/blog/backend-env-vars.yaml \
+            --kubeconfig "$KUBECONFIG"
