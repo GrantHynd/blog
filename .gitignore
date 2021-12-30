@@ -166,3 +166,6 @@ terraform.rc
 
 # generated kubeconfig
 kubeconfig 
+
+# local config k8s files
+*.local.yaml
