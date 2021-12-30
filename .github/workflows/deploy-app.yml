@@ -4,9 +4,6 @@ on:
   # TODO: remove after testing
   pull_request:
     branches: [main]
-  workflow_run:
-    workflows: ["Build and publish frontend"]
-    types: ["completed"]
 
 jobs:
   deployment:
