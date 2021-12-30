@@ -24,7 +24,7 @@ jobs:
           BACKEND_DOMAIN: ${{ secrets.BACKEND_DOMAIN }}
           FRONTEND_DOMAIN: ${{ secrets.FRONTEND_DOMAIN }}
         run: |
-          envsubst < infrastructure/services/blog/backend-env-vars.yaml > values.tmp && /
+          envsubst < infrastructure/services/blog/backend-env-vars.yaml > values.tmp && \
           mv values.tmp infrastructure/services/blog/backend-env-vars.yaml
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
