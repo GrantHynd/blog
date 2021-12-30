@@ -10,12 +10,27 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v1
-      - name: Substitute env vars
-        run: envsubst < infrastructure/services/blog/backend-env-vars.yaml > values.tmp && mv values.tmp infrastructure/services/blog/backend-env-vars.yaml
-      - name: Deploy
-        uses: WyriHaximus/github-action-helm3@v2
+      - uses: azure/setup-helm@v1
         with:
-          exec: helm upgrade --install blog blog --wait --atomic \
+          version: "latest"
+      - name: Substitute env vars
+        shell: bash
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          BACKEND_DOMAIN: ${{ secrets.BACKEND_DOMAIN }}
+          FRONTEND_DOMAIN: ${{ secrets.FRONTEND_DOMAIN }}
+        run: |
+          envsubst < infrastructure/services/blog/backend-env-vars.yaml > values.tmp && \
+          mv values.tmp infrastructure/services/blog/backend-env-vars.yaml
+      - name: Deploy Application Helm Chart
+        with:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+        run: |
+          helm upgrade blog blog --install --wait --atomic \
             --repo https://granthynd.github.io/helm-charts \
-            -f infrastructure/services/blog/backend-env-vars.yaml
-          kubeconfig: "${{ secrets.KUBECONFIG }}"
+            -f infrastructure/services/blog/backend-env-vars.yaml \
+            --kubeconfig "$KUBECONFIG"
