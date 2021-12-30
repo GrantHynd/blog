@@ -27,7 +27,8 @@ jobs:
           envsubst < infrastructure/services/blog/backend-env-vars.yaml > values.tmp && \
           mv values.tmp infrastructure/services/blog/backend-env-vars.yaml
       - name: Deploy Application Helm Chart
-        with:
+        shell: bash
+        env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
         run: |
           helm upgrade blog blog --install --wait --atomic \
