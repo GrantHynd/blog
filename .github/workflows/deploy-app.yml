@@ -29,7 +29,7 @@ jobs:
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
         with:
-          exec: helm upgrade --install blog blog --wait --atomic \
+          exec: helm upgrade blog blog --install --wait --atomic \
             --repo https://granthynd.github.io/helm-charts \
             -f infrastructure/services/blog/backend-env-vars.yaml
           kubeconfig: "${{ secrets.KUBECONFIG }}"
