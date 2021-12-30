@@ -11,7 +11,18 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Substitute env vars
-        run: envsubst < infrastructure/services/blog/backend-env-vars.yaml > values.tmp && mv values.tmp infrastructure/services/blog/backend-env-vars.yaml
+        shell: bash
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          BACKEND_DOMAIN: ${{ secrets.BACKEND_DOMAIN }}
+          FRONTEND_DOMAIN: ${{ secrets.FRONTEND_DOMAIN }}
+        run: |
+          envsubst < infrastructure/services/blog/backend-env-vars.yaml > values.tmp && /
+          mv values.tmp infrastructure/services/blog/backend-env-vars.yaml
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v2
         with:

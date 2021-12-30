@@ -1,15 +1,15 @@
 backendEnvVars:
   - name: "DB_HOST"
-    value: "${secrets.DB_HOST}"
+    value: ${DB_HOST}
   - name: "DB_PORT"
-    value: "${secrets.DB_PORT}"
+    value: ${DB_PORT}
   - name: "DB_NAME"
-    value: "${secrets.DB_NAME}"
+    value: ${DB_NAME}
   - name: "DB_USER"
-    value: "${secrets.DB_USER}"
+    value: ${DB_USER}
   - name: "DB_PASSWORD"
-    value: "${secrets.DB_PASSWORD}"
+    value: ${DB_PASSWORD}
   - name: "BACKEND_DOMAIN"
-    value: "${secrets.BACKEND_DOMAIN}"
+    value: ${BACKEND_DOMAIN}
   - name: "FRONTEND_DOMAIN"
-    value: "${secrets.FRONTEND_DOMAIN}"
+    value: ${FRONTEND_DOMAIN}
