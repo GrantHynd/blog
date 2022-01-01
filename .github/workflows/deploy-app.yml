@@ -13,7 +13,7 @@ jobs:
       - uses: azure/setup-helm@v1
         with:
           version: "latest"
-      - name: Substitute env vars
+      - name: Setup env vars and kubeconfig
         shell: bash
         env:
           DB_HOST: ${{ secrets.DB_HOST }}
@@ -23,15 +23,23 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           BACKEND_DOMAIN: ${{ secrets.BACKEND_DOMAIN }}
           FRONTEND_DOMAIN: ${{ secrets.FRONTEND_DOMAIN }}
-        run: |
-          envsubst < infrastructure/services/blog/backend-env-vars.yaml > values.tmp && \
-          mv values.tmp infrastructure/services/blog/backend-env-vars.yaml
-      - name: Deploy Application Helm Chart
-        shell: bash
-        env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
         run: |
           echo "${KUBECONFIG}" | base64 --decode > /tmp/kubeconfig
+      - name: Deploy Postgres Helm Chart
+        shell: bash
+        run: |
+          envsubst < infrastructure/services/postgres/values-override.yaml > values.tmp && \
+          mv values.tmp infrastructure/services/postgres/values-override.yaml
+          helm upgrade blog-database postgresql --install --wait --atomic \
+            --repo https://charts.bitnami.com/bitnami \
+            -f infrastructure/services/postgres/values-override.yaml \
+            --kubeconfig /tmp/kubeconfig
+      - name: Deploy Application Helm Chart
+        shell: bash
+        run: |
+          envsubst < infrastructure/services/blog/backend-env-vars.yaml > values.tmp && \
+          mv values.tmp infrastructure/services/blog/backend-env-vars.yaml
           helm upgrade blog blog --install --wait --atomic \
             --repo https://granthynd.github.io/helm-charts \
             -f infrastructure/services/blog/backend-env-vars.yaml \
