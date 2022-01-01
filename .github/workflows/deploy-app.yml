@@ -31,7 +31,8 @@ jobs:
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
         run: |
+          "${KUBECONFIG}" | base64 --decode > /tmp/kubeconfig
           helm upgrade blog blog --install --wait --atomic \
             --repo https://granthynd.github.io/helm-charts \
             -f infrastructure/services/blog/backend-env-vars.yaml \
-            --kubeconfig "$KUBECONFIG"
+            --kubeconfig /tmp/kubeconfig
