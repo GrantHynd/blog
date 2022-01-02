@@ -1,9 +1,23 @@
-name: Deploy application
+name: Deploy database and application
 
 on:
   workflow_run:
     workflows: ["Build and publish frontend"]
     types: ["completed"]
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  DB_HOST: ${{ secrets.DB_HOST }}
+  DB_PORT: ${{ secrets.DB_PORT }}
+  DB_NAME: ${{ secrets.DB_NAME }}
+  DB_USER: ${{ secrets.DB_USER }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  BACKEND_DOMAIN: ${{ secrets.BACKEND_DOMAIN }}
+  FRONTEND_DOMAIN: ${{ secrets.FRONTEND_DOMAIN }}
+  KUBECONFIG: ${{ secrets.KUBECONFIG }}
 
 jobs:
   deployment:
@@ -13,21 +27,10 @@ jobs:
       - uses: azure/setup-helm@v1
         with:
           version: "latest"
-      - name: Setup env vars and kubeconfig
-        shell: bash
-        env:
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: ${{ secrets.DB_PORT }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          BACKEND_DOMAIN: ${{ secrets.BACKEND_DOMAIN }}
-          FRONTEND_DOMAIN: ${{ secrets.FRONTEND_DOMAIN }}
-          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+      - name: Setup kubeconfig file
         run: |
           echo "${KUBECONFIG}" | base64 --decode > /tmp/kubeconfig
       - name: Deploy Postgres Helm Chart
-        shell: bash
         run: |
           envsubst < infrastructure/services/postgres/values-override.yaml > values.tmp && \
           mv values.tmp infrastructure/services/postgres/values-override.yaml
@@ -36,7 +39,6 @@ jobs:
             -f infrastructure/services/postgres/values-override.yaml \
             --kubeconfig /tmp/kubeconfig
       - name: Deploy Application Helm Chart
-        shell: bash
         run: |
           envsubst < infrastructure/services/blog/backend-env-vars.yaml > values.tmp && \
           mv values.tmp infrastructure/services/blog/backend-env-vars.yaml
